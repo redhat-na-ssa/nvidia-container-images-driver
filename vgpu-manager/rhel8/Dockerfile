@@ -10,6 +10,8 @@ WORKDIR /driver
 COPY NVIDIA-Linux-${DRIVER_ARCH}-${DRIVER_VERSION}-vgpu-kvm.run .
 RUN chmod +x NVIDIA-Linux-${DRIVER_ARCH}-${DRIVER_VERSION}-vgpu-kvm.run
 
+COPY *.rpm .
+
 COPY nvidia-driver /usr/local/bin
 COPY ocp_dtk_entrypoint /usr/local/bin
 
@@ -24,8 +26,8 @@ LABEL description="See summary"
 # Install / upgrade packages here that are required to resolve CVEs
 ARG CVE_UPDATES
 RUN if [ -n "${CVE_UPDATES}" ]; then \
-        yum update -y ${CVE_UPDATES} && \
-        rm -rf /var/cache/yum/*; \
+    yum update -y ${CVE_UPDATES} && \
+    rm -rf /var/cache/yum/*; \
     fi
 
 # Add NGC DL license from the CUDA image
